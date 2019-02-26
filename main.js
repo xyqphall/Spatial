@@ -1,5 +1,5 @@
 window.onload = function () {
-    var display = document.getElementById("display")
+    const display = document.getElementById("display")
     const DISPLAY_WIDTH = display.clientWidth;
 
     const bg_bplanet_1 = new Image();
@@ -22,7 +22,8 @@ window.onload = function () {
         ]
     }
 
-    var ctx = display.getContext("2d")
+    const ctx = display.getContext("2d")
+
     function update_background(old_world, next_world) {
         const time_diff = (next_world.time - old_world.time) / 1000
         const background_planets = old_world.background_planets
