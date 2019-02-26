@@ -3,10 +3,10 @@ window.onload = function () {
     const DISPLAY_WIDTH = display.clientWidth;
 
     const bg_bplanet_1 = new Image();
-    bg_bplanet_1.src = 'BG_BPlanet_1.png'
+    bg_bplanet_1.src = 'images/BG_BPlanet_1.png'
 
     const bg_bplanet_2 = new Image();
-    bg_bplanet_2.src = 'BG_BPlanet_2.png'
+    bg_bplanet_2.src = 'images/BG_BPlanet_2.png'
 
     const init_world = {
         time: performance.now(),
