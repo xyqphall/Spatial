@@ -7,3 +7,11 @@ const emitter = (should_spawn_particle, spawn_particle, get_old_particles) =>
             return old_particles
         }
     }
+
+const move = second_passed => object => ({
+    ...object,
+    position: {
+        x: object.position.x + object.speed.x * second_passed,
+        y: object.position.y + object.speed.y * second_passed,
+    }
+})

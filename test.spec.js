@@ -48,5 +48,36 @@ describe("emitter", () => {
         const particles_after = em(old_particles);
         chai.expect(particles_after).to.equal(old_particles)
     })
-
 });
+
+describe("move", () => {
+    it("adds speed to current position after a second", () => {
+        let move_for_one_second = move(1)
+        chai.expect(move_for_one_second({
+            speed: {x: 1, y: 1},
+            position: {x: 0, y: 0},
+        }).position).to.be.deep.equal({x: 1, y: 1})
+        chai.expect(move_for_one_second({
+            speed: {x: 1, y: 3},
+            position: {x: 3, y: 2},
+        }).position).to.be.deep.equal({x: 4, y: 5})
+    })
+    it("adds speed proportional to the time passed", () => {
+        let object = {
+            speed: {x: 1, y: 3},
+            position: {x: 3, y: 2},
+        }
+        chai.expect(
+            move(2)(object).position
+        ).to.be.deep.equal({x: 5, y: 8})
+    })
+    it("preserves speed", () => {
+        let object = {
+            speed: {x: 1, y: 3},
+            position: {x: 3, y: 2},
+        }
+        chai.expect(
+            move(2)(object).speed
+        ).to.be.deep.equal({x: 1, y: 3})
+    })
+})
