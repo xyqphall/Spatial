@@ -132,6 +132,11 @@ window.onload = function () {
 
     }
 
+    const new_shoot = player => ({
+        speed: {x: DISPLAY_WIDTH / 2, y: 0},
+        position: player.position,
+        image: projectile_default
+    })
 
     function player_fire(new_world) {
         return {
@@ -139,11 +144,7 @@ window.onload = function () {
             player: {
                 ...new_world.player,
                 last_fire: new_world.player.last_fire + 1000,
-                shoots: [...new_world.player.shoots, {
-                    speed: {x: DISPLAY_WIDTH / 2, y: 0},
-                    position: new_world.player.position,
-                    image: projectile_default
-                }]
+                shoots: [...new_world.player.shoots, new_shoot(new_world.player)]
             }
         }
     }
