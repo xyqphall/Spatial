@@ -19,6 +19,7 @@ window.onload = function () {
     const bg_cloud_2 = loadImage('images/BG_Cloud_2.png')
     const bg_cloud_3 = loadImage('images/BG_Cloud_3.png')
     const ship = loadImage('images/Ship.png')
+    const projectile_default = loadImage('images/Projectile_Default.png')
 
     const big_planet_speed = {x: -20, y: 0}
     const big_planets = [
@@ -99,11 +100,14 @@ window.onload = function () {
             clouds,
         },
         player: {
+            fire: false,
+            last_fire: 0,
             position: {
                 x: 0,
                 y: DISPLAY_HEIGHT / 2,
             },
             image: ship,
+            shoots:[],
         }
     }
 
@@ -111,8 +115,8 @@ window.onload = function () {
 
     function update_background(old_world, next_world) {
         const time_delta = (next_world.time - old_world.time) / 1000
-        const background = old_world.background
         const move_delta = move(time_delta)
+        const background = old_world.background
         return {
             ...next_world,
             background: {
@@ -127,9 +131,49 @@ window.onload = function () {
         return {...old_world, time}
 
     }
+
+
+    function player_fire(new_world) {
+        return {
+            ...new_world,
+            player: {
+                ...new_world.player,
+                last_fire: new_world.player.last_fire + 1000,
+                shoots: [...new_world.player.shoots, {
+                    speed: {x: DISPLAY_WIDTH / 2, y: 0},
+                    position: new_world.player.position,
+                    image: projectile_default
+                }]
+            }
+        }
+    }
+
+    function handle_player_fire(new_world) {
+        if (new_world.player.fire) {
+            if (new_world.player.last_fire + 1000 <= new_world.time) {
+                return player_fire(new_world)
+            }
+        }
+        return new_world
+    }
+
+    function update_ship(old_world, new_world) {
+        const time_delta = (new_world.time - old_world.time) / 1000
+        const move_delta = move(time_delta)
+        const world_with_handled_player_fire = handle_player_fire(new_world)
+        return {
+            ...world_with_handled_player_fire,
+            player: {
+                ...world_with_handled_player_fire.player,
+                shoots: world_with_handled_player_fire.player.shoots.map(move_delta)
+            }
+        }
+    }
+
     function update(old_world, time) {
-        const next_world = update_time(old_world, time)
-        return update_background(old_world, next_world)
+        const world_1 = update_time(old_world, time)
+        const world_2 = update_background(old_world, world_1)
+        return update_ship(old_world, world_2)
 
     }
     function draw_moving_background(world) {
@@ -144,6 +188,7 @@ window.onload = function () {
 
     function draw_player(world) {
         draw_sprite(world.player)
+        world.player.shoots.forEach(draw_sprite)
     }
 
     function draw(world) {
@@ -152,11 +197,41 @@ window.onload = function () {
         draw_player(world)
     }
 
+    function handle_input(world, input) {
+        switch (input) {
+            case "FIRE-ON": return {
+                ...world,
+                player: {
+                    ...world.player,
+                    fire: true,
+                }
+            }
+            case "FIRE-OFF": return {
+                ...world,
+                player: {
+                    ...world.player,
+                    fire: false,
+                }
+            }
+        }
+        return world
+    }
+
     const tick = world => time => {
-        const next_world = update(world, time)
+        const reduced_world = input_queue.reduce(handle_input, world)
+        const next_world = update(reduced_world, time)
         draw(next_world);
         window.requestAnimationFrame(tick(next_world))
     };
+    let input_queue = []
+
+    document.addEventListener("keydown", () => {
+        input_queue.push("FIRE-ON")
+    })
+    document.addEventListener("keyup", () => {
+        input_queue.push("FIRE-OFF")
+    })
+
     tick(init_world)(performance.now())
 }
 
