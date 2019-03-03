@@ -101,7 +101,7 @@ window.onload = function () {
         },
         player: {
             fire: false,
-            last_fire: 0,
+            next_fire: 0,
             position: {
                 x: 0,
                 y: DISPLAY_HEIGHT / 2,
@@ -143,7 +143,7 @@ window.onload = function () {
             ...new_world,
             player: {
                 ...new_world.player,
-                last_fire: new_world.player.last_fire + 1000,
+                next_fire: new_world.player.next_fire + 1000,
                 shoots: [...new_world.player.shoots, new_shoot(new_world.player)]
             }
         }
@@ -151,7 +151,7 @@ window.onload = function () {
 
     function handle_player_fire(new_world) {
         if (new_world.player.fire) {
-            if (new_world.player.last_fire + 1000 <= new_world.time) {
+            if (new_world.player.next_fire <= new_world.time) {
                 return player_fire(new_world)
             }
         }
@@ -205,6 +205,7 @@ window.onload = function () {
                 player: {
                     ...world.player,
                     fire: true,
+                    next_fire: Math.max(world.time, world.player.next_fire)
                 }
             }
             case "FIRE-OFF": return {
