@@ -134,7 +134,10 @@ window.onload = function () {
 
     const new_shoot = player => ({
         speed: {x: DISPLAY_WIDTH / 2, y: 0},
-        position: player.position,
+        position: {
+            x: player.position.x + 120,
+            y: player.position.y - 10,
+        },
         image: projectile_default
     })
 
@@ -188,8 +191,8 @@ window.onload = function () {
     }
 
     function draw_player(world) {
-        draw_sprite(world.player)
         world.player.shoots.forEach(draw_sprite)
+        draw_sprite(world.player)
     }
 
     function draw(world) {
