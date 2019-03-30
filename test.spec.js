@@ -81,3 +81,11 @@ describe("move", () => {
         ).to.be.deep.equal({x: 1, y: 3})
     })
 })
+
+describe("point", () => {
+    it("can be added to another point", () => {
+        const p = point(1, 2).add(point(3, 4))
+        chai.expect(p.x).to.equal(4)
+        chai.expect(p.y).to.equal(6)
+    })
+})

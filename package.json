@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test": "mocha --file global-chai.js --file library.js test.spec.js"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2"
+  }
+}
