@@ -89,3 +89,30 @@ describe("point", () => {
         chai.expect(p.y).to.equal(6)
     })
 })
+describe("sprite", () => {
+    it('has position', () => {
+        const s = sprite(
+            point(1, 2),
+            point(3,4),
+            "new Image()"
+        )
+        chai.expect(s.position.x).to.equal(1)
+    });
+    it('has speed', () => {
+        const s = sprite(
+            point(1, 2),
+            point(3,4),
+            "new Image()"
+        )
+        chai.expect(s.speed.x).to.equal(3)
+    });
+    it('has image', () => {
+        const s = sprite(
+            point(1, 2),
+            point(3,4),
+            "new Image()"
+        )
+        chai.expect(s.image).to.equal("new Image()")
+    });
+
+})
