@@ -22,5 +22,6 @@ global.point = (x, y) => ({
 })
 
 global.sprite = (position, speed, image) => ({
-    position, speed, image
+    position, speed, image,
+    teleport: position => sprite(position, speed, image)
 })
