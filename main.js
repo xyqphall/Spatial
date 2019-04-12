@@ -23,74 +23,21 @@ window.onload = function () {
 
     const big_planet_speed = {x: -20, y: 0}
     const big_planets = [
-        {
-            speed: big_planet_speed,
-            position: {x: -200, y: 400,},
-            image: bg_bplanet_3,
-        },
-        {
-            speed: big_planet_speed,
-            position: {x: DISPLAY_WIDTH / 2, y:200,},
-            image: bg_bplanet_2,
-        },
-        {
-            speed: big_planet_speed,
-            position: {x: DISPLAY_WIDTH, y:-200,},
-            image: bg_bplanet_1,
-        },
-        {
-            speed: big_planet_speed,
-            position: {x: DISPLAY_WIDTH * 1.5, y:200,},
-            image: bg_bplanet_4,
-        },
+        sprite({x: -200, y: 400,}, big_planet_speed, bg_bplanet_3),
+        sprite({x: DISPLAY_WIDTH / 2, y:200,}, big_planet_speed, bg_bplanet_2),
+        sprite({x: DISPLAY_WIDTH, y:-200,}, big_planet_speed, bg_bplanet_1),
+        sprite({x: DISPLAY_WIDTH * 1.5, y:200,}, big_planet_speed, bg_bplanet_4),
     ]
     const planets = [
-        {
-            speed: {x: -10, y: 0},
-            position: {x: DISPLAY_WIDTH / 2, y: 200,},
-            image: bg_splanet_1,
-        },
-        {
-            speed: {x: -10, y: 0},
-            position: {x: DISPLAY_WIDTH / 4, y: 400,},
-            image: bg_splanet_2,
-        },
-        {
-            speed: {x: -10, y: 0},
-            position: {x: DISPLAY_WIDTH * 0.75, y: 600,},
-            image: bg_splanet_1,
-        },
-        {
-            speed: {x: -10, y: 0},
-            position: {x: DISPLAY_WIDTH, y: 200,},
-            image: bg_splanet_2,
-        },
+        sprite({x: DISPLAY_WIDTH / 2, y: 200,}, {x: -10, y: 0}, bg_splanet_1),
+        sprite({x: DISPLAY_WIDTH / 4, y: 400,}, {x: -10, y: 0}, bg_splanet_2),
+        sprite({x: DISPLAY_WIDTH * 0.75, y: 600,}, {x: -10, y: 0}, bg_splanet_1),
+        sprite({x: DISPLAY_WIDTH, y: 200,}, {x: -10, y: 0}, bg_splanet_2),
     ]
     const clouds = [
-        {
-            speed: {x: -40, y: 0,},
-            position: {
-                x: DISPLAY_WIDTH,
-                y: DISPLAY_HEIGHT / 4,
-            },
-            image: bg_cloud_1,
-        },
-        {
-            speed: {x: -40, y: 0,},
-            position: {
-                x: 0,
-                y: 0,
-            },
-            image: bg_cloud_2,
-        },
-        {
-            speed: {x: -40, y: 0,},
-            position: {
-                x: DISPLAY_WIDTH / 4,
-                y: DISPLAY_HEIGHT / 2,
-            },
-            image: bg_cloud_3,
-        },
+        sprite({x: DISPLAY_WIDTH, y: DISPLAY_HEIGHT / 4,}, {x: -40, y: 0,}, bg_cloud_1),
+        sprite({x: 0, y: 0,}, {x: -40, y: 0,}, bg_cloud_2),
+        sprite({x: DISPLAY_WIDTH / 4, y: DISPLAY_HEIGHT / 2,}, {x: -40, y: 0,}, bg_cloud_3),
     ]
     const init_world = {
         time: performance.now(),
@@ -132,14 +79,11 @@ window.onload = function () {
 
     }
 
-    const new_shoot = player => ({
-        speed: {x: DISPLAY_WIDTH / 2, y: 0},
-        position: {
-            x: player.position.x + 120,
-            y: player.position.y - 10,
-        },
-        image: projectile_default
-    })
+    const new_shoot = player => sprite(
+        {x: player.position.x + 120, y: player.position.y - 10,},
+        {x: DISPLAY_WIDTH / 2, y: 0},
+        projectile_default
+    )
 
     function player_fire(new_world) {
         return {
