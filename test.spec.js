@@ -123,4 +123,13 @@ describe("sprite", () => {
         chai.expect(s.position.x).to.equal(12)
         chai.expect(s.position.y).to.equal(43)
     });
+    it('moves', () => {
+        const s = sprite(
+            point(1, 2),
+            point(3,4),
+            "new Image()"
+        ).move(point(12, 43))
+        chai.expect(s.position.x).to.equal(13)
+        chai.expect(s.position.y).to.equal(45)
+    });
 })

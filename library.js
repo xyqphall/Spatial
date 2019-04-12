@@ -21,7 +21,12 @@ global.point = (x, y) => ({
     add: other => point(x + other.x, y + other.y)
 })
 
-global.sprite = (position, speed, image) => ({
-    position, speed, image,
-    teleport: position => sprite(position, speed, image)
-})
+global.sprite = (position, speed, image) => {
+    const teleport = position => sprite(position, speed, image)
+    const move = distance => teleport(position.add(distance))
+    return {
+        position, speed, image,
+        teleport,
+        move,
+    }
+}
