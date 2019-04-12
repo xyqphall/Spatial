@@ -18,7 +18,8 @@ global.move = second_passed => object => ({
 
 global.point = (x, y) => ({
     x, y,
-    add: other => point(x + other.x, y + other.y)
+    add: other => point(x + other.x, y + other.y),
+    multiply: k => point(x * k, y * k),
 })
 
 global.sprite = (position, speed, image) => {

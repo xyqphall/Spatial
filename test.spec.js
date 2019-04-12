@@ -53,29 +53,17 @@ describe("emitter", () => {
 describe("move", () => {
     it("adds speed to current position after a second", () => {
         let move_for_one_second = move(1)
-        chai.expect(move_for_one_second({
-            speed: {x: 1, y: 1},
-            position: {x: 0, y: 0},
-        }).position).to.be.deep.equal({x: 1, y: 1})
-        chai.expect(move_for_one_second({
-            speed: {x: 1, y: 3},
-            position: {x: 3, y: 2},
-        }).position).to.be.deep.equal({x: 4, y: 5})
+        chai.expect(move_for_one_second(sprite({x: 0, y: 0}, {x: 1, y: 1})).position).to.be.deep.equal({x: 1, y: 1})
+        chai.expect(move_for_one_second(sprite({x: 3, y: 2}, {x: 1, y: 3})).position).to.be.deep.equal({x: 4, y: 5})
     })
     it("adds speed proportional to the time passed", () => {
-        let object = {
-            speed: {x: 1, y: 3},
-            position: {x: 3, y: 2},
-        }
+        let object = sprite({x: 3, y: 2}, {x: 1, y: 3})
         chai.expect(
             move(2)(object).position
         ).to.be.deep.equal({x: 5, y: 8})
     })
     it("preserves speed", () => {
-        let object = {
-            speed: {x: 1, y: 3},
-            position: {x: 3, y: 2},
-        }
+        let object = sprite({x: 3, y: 2}, {x: 1, y: 3})
         chai.expect(
             move(2)(object).speed
         ).to.be.deep.equal({x: 1, y: 3})
@@ -86,6 +74,11 @@ describe("point", () => {
     it("can be added to another point", () => {
         const p = point(1, 2).add(point(3, 4))
         chai.expect(p.x).to.equal(4)
+        chai.expect(p.y).to.equal(6)
+    })
+    it("can be multiplied by a number", () => {
+        const p = point(1, 2).multiply(3)
+        chai.expect(p.x).to.equal(3)
         chai.expect(p.y).to.equal(6)
     })
 })
