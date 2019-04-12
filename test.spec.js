@@ -53,20 +53,24 @@ describe("emitter", () => {
 describe("move", () => {
     it("adds speed to current position after a second", () => {
         let move_for_one_second = move(1)
-        chai.expect(move_for_one_second(sprite({x: 0, y: 0}, {x: 1, y: 1})).position).to.be.deep.equal({x: 1, y: 1})
-        chai.expect(move_for_one_second(sprite({x: 3, y: 2}, {x: 1, y: 3})).position).to.be.deep.equal({x: 4, y: 5})
+        const p1 = move_for_one_second(sprite(point(0, 0), point(1, 1))).position
+        const p2 = move_for_one_second(sprite(point(3, 2), point(1, 3))).position
+        chai.expect(p1.x).to.equal(1)
+        chai.expect(p1.y).to.equal(1)
+        chai.expect(p2.x).to.equal(4)
+        chai.expect(p2.y).to.equal(5)
     })
     it("adds speed proportional to the time passed", () => {
-        let object = sprite({x: 3, y: 2}, {x: 1, y: 3})
-        chai.expect(
-            move(2)(object).position
-        ).to.be.deep.equal({x: 5, y: 8})
+        let object = sprite(point(3, 2), point(1, 3))
+        const position = move(2)(object).position
+        chai.expect(position.x).to.equal(5)
+        chai.expect(position.y).to.equal(8)
     })
     it("preserves speed", () => {
-        let object = sprite({x: 3, y: 2}, {x: 1, y: 3})
-        chai.expect(
-            move(2)(object).speed
-        ).to.be.deep.equal({x: 1, y: 3})
+        let object = sprite(point(3, 2), point(1, 3))
+        const speed = move(2)(object).speed
+        chai.expect(speed.x).to.equal(1)
+        chai.expect(speed.y).to.equal(3)
     })
 })
 

@@ -8,13 +8,8 @@ global.emitter = (should_spawn_particle, spawn_particle, get_old_particles) =>
         }
     }
 
-global.move = second_passed => object => ({
-    ...object,
-    position: {
-        x: object.position.x + object.speed.x * second_passed,
-        y: object.position.y + object.speed.y * second_passed,
-    }
-})
+global.move = seconds_passed => a_sprite =>
+    a_sprite.move(a_sprite.distance(seconds_passed))
 
 global.point = (x, y) => ({
     x, y,
@@ -25,9 +20,11 @@ global.point = (x, y) => ({
 global.sprite = (position, speed, image) => {
     const teleport = position => sprite(position, speed, image)
     const move = distance => teleport(position.add(distance))
+    const distance = seconds => speed.multiply(seconds)
     return {
         position, speed, image,
         teleport,
         move,
+        distance,
     }
 }

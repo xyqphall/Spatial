@@ -21,23 +21,23 @@ window.onload = function () {
     const ship = loadImage('images/Ship.png')
     const projectile_default = loadImage('images/Projectile_Default.png')
 
-    const big_planet_speed = {x: -20, y: 0}
+    const big_planet_speed = point(-20, 0)
     const big_planets = [
-        sprite({x: -200, y: 400,}, big_planet_speed, bg_bplanet_3),
-        sprite({x: DISPLAY_WIDTH / 2, y:200,}, big_planet_speed, bg_bplanet_2),
-        sprite({x: DISPLAY_WIDTH, y:-200,}, big_planet_speed, bg_bplanet_1),
-        sprite({x: DISPLAY_WIDTH * 1.5, y:200,}, big_planet_speed, bg_bplanet_4),
+        sprite(point(-200, 400,), big_planet_speed, bg_bplanet_3),
+        sprite(point(DISPLAY_WIDTH / 2, 200,), big_planet_speed, bg_bplanet_2),
+        sprite(point(DISPLAY_WIDTH, -200,), big_planet_speed, bg_bplanet_1),
+        sprite(point(DISPLAY_WIDTH * 1.5, 200,), big_planet_speed, bg_bplanet_4),
     ]
     const planets = [
-        sprite({x: DISPLAY_WIDTH / 2, y: 200,}, {x: -10, y: 0}, bg_splanet_1),
-        sprite({x: DISPLAY_WIDTH / 4, y: 400,}, {x: -10, y: 0}, bg_splanet_2),
-        sprite({x: DISPLAY_WIDTH * 0.75, y: 600,}, {x: -10, y: 0}, bg_splanet_1),
-        sprite({x: DISPLAY_WIDTH, y: 200,}, {x: -10, y: 0}, bg_splanet_2),
+        sprite(point(DISPLAY_WIDTH / 2, 200,), point(-10, 0), bg_splanet_1),
+        sprite(point(DISPLAY_WIDTH / 4, 400,), point(-10, 0), bg_splanet_2),
+        sprite(point(DISPLAY_WIDTH * 0.75, 600,), point(-10, 0), bg_splanet_1),
+        sprite(point(DISPLAY_WIDTH, 200,), point(-10, 0), bg_splanet_2),
     ]
     const clouds = [
-        sprite({x: DISPLAY_WIDTH, y: DISPLAY_HEIGHT / 4,}, {x: -40, y: 0,}, bg_cloud_1),
-        sprite({x: 0, y: 0,}, {x: -40, y: 0,}, bg_cloud_2),
-        sprite({x: DISPLAY_WIDTH / 4, y: DISPLAY_HEIGHT / 2,}, {x: -40, y: 0,}, bg_cloud_3),
+        sprite(point(DISPLAY_WIDTH, DISPLAY_HEIGHT / 4,), point(-40, 0,), bg_cloud_1),
+        sprite(point(0, 0,), point(-40, 0,), bg_cloud_2),
+        sprite(point(DISPLAY_WIDTH / 4, DISPLAY_HEIGHT / 2,), point(-40, 0,), bg_cloud_3),
     ]
     const init_world = {
         time: performance.now(),
@@ -80,8 +80,8 @@ window.onload = function () {
     }
 
     const new_shoot = player => sprite(
-        {x: player.position.x + 120, y: player.position.y - 10,},
-        {x: DISPLAY_WIDTH / 2, y: 0},
+        point(player.position.x + 120, player.position.y - 10,),
+        point(DISPLAY_WIDTH / 2, 0),
         projectile_default
     )
 
