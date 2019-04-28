@@ -172,6 +172,14 @@ window.onload = function () {
                     ship: world.player.ship.accelerateTo(point(0, -DISPLAY_HEIGHT/2))
                 }
             }
+        } else if (input === "STOP-MOVE") {
+            return {
+                ...world,
+                player: {
+                    ...world.player,
+                    ship: world.player.ship.accelerateTo(point(0, 0))
+                }
+            }
         }
         return world
     }
