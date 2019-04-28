@@ -79,8 +79,15 @@ window.onload = function () {
 
     }
 
-    const new_shot = ship => sprite(
+    const new_top_shot = ship => sprite(
         point(ship.position.x + 120, ship.position.y - 10,),
+        point(DISPLAY_WIDTH / 2, 0),
+        projectile_default
+    )
+
+    const new_bottom_shot = ship => sprite(
+        // TODO: fix y alignment, is guesstimated.
+        point(ship.position.x + 120, ship.position.y + ship.image.height - 35),
         point(DISPLAY_WIDTH / 2, 0),
         projectile_default
     )
@@ -91,7 +98,11 @@ window.onload = function () {
             player: {
                 ...new_world.player,
                 next_fire: new_world.player.next_fire + 500,
-                shots: [...new_world.player.shots, new_shot(new_world.player.ship)]
+                shots: [
+                    ...new_world.player.shots,
+                    new_top_shot(new_world.player.ship),
+                    new_bottom_shot(new_world.player.ship),
+                ]
             }
         }
     }
