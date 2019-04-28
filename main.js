@@ -177,11 +177,15 @@ window.onload = function () {
     document.addEventListener("keydown", event => {
         if (event.code === "Space") {
             input_queue.push("FIRE-ON")
+        } else if (event.code === "ArrowUp") {
+            input_queue.push("MOVE-NORTH")
         }
     })
     document.addEventListener("keyup", event => {
         if (event.code === "Space") {
             input_queue.push("FIRE-OFF")
+        } else if (event.code === "ArrowUp") {
+            input_queue.push("STOP-MOVE")
         }
     })
 
