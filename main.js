@@ -174,11 +174,15 @@ window.onload = function () {
     };
     let input_queue = []
 
-    document.addEventListener("keydown", () => {
-        input_queue.push("FIRE-ON")
+    document.addEventListener("keydown", event => {
+        if (event.code === "Space") {
+            input_queue.push("FIRE-ON")
+        }
     })
-    document.addEventListener("keyup", () => {
-        input_queue.push("FIRE-OFF")
+    document.addEventListener("keyup", event => {
+        if (event.code === "Space") {
+            input_queue.push("FIRE-OFF")
+        }
     })
 
     tick(init_world)(performance.now())
