@@ -105,7 +105,7 @@ window.onload = function () {
         return new_world
     }
 
-    function update_ship(old_world, new_world) {
+    function update_player(old_world, new_world) {
         const time_delta = (new_world.time - old_world.time) / 1000
         const move_delta = move(time_delta)
         const world_with_handled_player_fire = handle_player_fire(new_world)
@@ -122,7 +122,7 @@ window.onload = function () {
     function update(old_world, time) {
         const world_1 = update_time(old_world, time)
         const world_2 = update_background(old_world, world_1)
-        return update_ship(old_world, world_2)
+        return update_player(old_world, world_2)
 
     }
     function draw_moving_background(world) {
