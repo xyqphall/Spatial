@@ -146,8 +146,8 @@ window.onload = function () {
     }
 
     function handle_input(world, input) {
-        switch (input) {
-            case "FIRE-ON": return {
+        if (input === "FIRE-ON") {
+            return {
                 ...world,
                 player: {
                     ...world.player,
@@ -155,7 +155,8 @@ window.onload = function () {
                     next_fire: Math.max(world.time, world.player.next_fire)
                 }
             }
-            case "FIRE-OFF": return {
+        } else if (input === "FIRE-OFF") {
+            return {
                 ...world,
                 player: {
                     ...world.player,
