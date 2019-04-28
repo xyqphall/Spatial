@@ -172,6 +172,30 @@ window.onload = function () {
                     ship: world.player.ship.accelerateTo(point(0, -DISPLAY_HEIGHT/2))
                 }
             }
+        } else if (input === "MOVE-SOUTH") {
+            return {
+                ...world,
+                player: {
+                    ...world.player,
+                    ship: world.player.ship.accelerateTo(point(0, DISPLAY_HEIGHT/2))
+                }
+            }
+        } else if (input === "MOVE-EAST") {
+            return {
+                ...world,
+                player: {
+                    ...world.player,
+                    ship: world.player.ship.accelerateTo(point(DISPLAY_HEIGHT/2, 0))
+                }
+            }
+        } else if (input === "MOVE-WEST") {
+            return {
+                ...world,
+                player: {
+                    ...world.player,
+                    ship: world.player.ship.accelerateTo(point(-DISPLAY_HEIGHT/2, 0))
+                }
+            }
         } else if (input === "STOP-MOVE") {
             return {
                 ...world,
@@ -198,12 +222,19 @@ window.onload = function () {
             input_queue.push("FIRE-ON")
         } else if (event.code === "ArrowUp") {
             input_queue.push("MOVE-NORTH")
+        } else if (event.code === "ArrowDown") {
+            input_queue.push("MOVE-SOUTH")
+        } else if (event.code === "ArrowRight") {
+            input_queue.push("MOVE-EAST")
+        } else if (event.code === "ArrowLeft") {
+            input_queue.push("MOVE-WEST")
         }
     })
+    const arrowKeys = ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft"];
     document.addEventListener("keyup", event => {
         if (event.code === "Space") {
             input_queue.push("FIRE-OFF")
-        } else if (event.code === "ArrowUp") {
+        } else if (arrowKeys.indexOf(event.code) !== -1) {
             input_queue.push("STOP-MOVE")
         }
     })
