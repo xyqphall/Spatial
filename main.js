@@ -164,6 +164,14 @@ window.onload = function () {
                     fire: false,
                 }
             }
+        } else if (input === "MOVE-NORTH") {
+            return {
+                ...world,
+                player: {
+                    ...world.player,
+                    ship: world.player.ship.accelerateTo(point(0, -DISPLAY_HEIGHT/2))
+                }
+            }
         }
         return world
     }
