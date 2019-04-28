@@ -49,11 +49,11 @@ window.onload = function () {
         player: {
             fire: false,
             next_fire: 0,
-            position: {
-                x: 0,
-                y: DISPLAY_HEIGHT / 2,
-            },
-            image: ship_image,
+            ship: sprite(
+                point(0, DISPLAY_HEIGHT / 2),
+                point(0, 0),
+                ship_image
+            ),
             shoots:[],
         }
     }
@@ -79,8 +79,8 @@ window.onload = function () {
 
     }
 
-    const new_shoot = player => sprite(
-        point(player.position.x + 120, player.position.y - 10,),
+    const new_shoot = ship => sprite(
+        point(ship.position.x + 120, ship.position.y - 10,),
         point(DISPLAY_WIDTH / 2, 0),
         projectile_default
     )
@@ -91,7 +91,7 @@ window.onload = function () {
             player: {
                 ...new_world.player,
                 next_fire: new_world.player.next_fire + 1000,
-                shoots: [...new_world.player.shoots, new_shoot(new_world.player)]
+                shoots: [...new_world.player.shoots, new_shoot(new_world.player.ship)]
             }
         }
     }
@@ -136,7 +136,7 @@ window.onload = function () {
 
     function draw_player(world) {
         world.player.shoots.forEach(draw_sprite)
-        draw_sprite(world.player)
+        draw_sprite(world.player.ship)
     }
 
     function draw(world) {
