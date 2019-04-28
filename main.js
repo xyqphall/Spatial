@@ -18,7 +18,7 @@ window.onload = function () {
     const bg_cloud_1 = loadImage('images/BG_Cloud_1.png')
     const bg_cloud_2 = loadImage('images/BG_Cloud_2.png')
     const bg_cloud_3 = loadImage('images/BG_Cloud_3.png')
-    const ship = loadImage('images/Ship.png')
+    const ship_image = loadImage('images/Ship.png')
     const projectile_default = loadImage('images/Projectile_Default.png')
 
     const big_planet_speed = point(-20, 0)
@@ -53,7 +53,7 @@ window.onload = function () {
                 x: 0,
                 y: DISPLAY_HEIGHT / 2,
             },
-            image: ship,
+            image: ship_image,
             shoots:[],
         }
     }
