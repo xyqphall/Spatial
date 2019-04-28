@@ -169,6 +169,7 @@ window.onload = function () {
 
     const tick = world => time => {
         const reduced_world = input_queue.reduce(handle_input, world)
+        input_queue = [];
         const next_world = update(reduced_world, time)
         draw(next_world);
         window.requestAnimationFrame(tick(next_world))
