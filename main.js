@@ -113,6 +113,7 @@ window.onload = function () {
             ...world_with_handled_player_fire,
             player: {
                 ...world_with_handled_player_fire.player,
+                ship: move_delta(world_with_handled_player_fire.player.ship),
                 shots: world_with_handled_player_fire.player.shots.map(move_delta)
             }
         }
