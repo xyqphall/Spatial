@@ -90,7 +90,7 @@ window.onload = function () {
             ...new_world,
             player: {
                 ...new_world.player,
-                next_fire: new_world.player.next_fire + 1000,
+                next_fire: new_world.player.next_fire + 500,
                 shots: [...new_world.player.shots, new_shot(new_world.player.ship)]
             }
         }
