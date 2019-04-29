@@ -87,46 +87,33 @@ describe("point", () => {
     })
 })
 describe("sprite", () => {
+    const s = sprite(
+        point(1, 2),
+        point(3,4),
+        "new Image()"
+    )
     it('has position', () => {
-        const s = sprite(
-            point(1, 2),
-            point(3,4),
-            "new Image()"
-        )
         chai.expect(s.position.x).to.equal(1)
     });
     it('has speed', () => {
-        const s = sprite(
-            point(1, 2),
-            point(3,4),
-            "new Image()"
-        )
         chai.expect(s.speed.x).to.equal(3)
     });
     it('has image', () => {
-        const s = sprite(
-            point(1, 2),
-            point(3,4),
-            "new Image()"
-        )
         chai.expect(s.image).to.equal("new Image()")
     });
     it('teleports', () => {
-        const s = sprite(
-            point(1, 2),
-            point(3,4),
-            "new Image()"
-        ).teleport(point(12, 43))
-        chai.expect(s.position.x).to.equal(12)
-        chai.expect(s.position.y).to.equal(43)
+        const teleported = s.teleport(point(12, 43))
+        chai.expect(teleported.position.x).to.equal(12)
+        chai.expect(teleported.position.y).to.equal(43)
     });
     it('moves', () => {
-        const s = sprite(
-            point(1, 2),
-            point(3,4),
-            "new Image()"
-        ).move(point(12, 43))
-        chai.expect(s.position.x).to.equal(13)
-        chai.expect(s.position.y).to.equal(45)
+        const moved = s.move(point(12, 43))
+        chai.expect(moved.position.x).to.equal(13)
+        chai.expect(moved.position.y).to.equal(45)
+    });
+    it('accelerate to velocities', function () {
+        const accelerated = s.accelerateTo(point(12, 43))
+        chai.expect(accelerated.speed.x).to.equal(12)
+        chai.expect(accelerated.speed.y).to.equal(43)
     });
 })
