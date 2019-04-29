@@ -51,7 +51,7 @@ describe("emitter", () => {
 });
 
 describe("move", () => {
-    it("adds speed to current position after a second", () => {
+    it("adds velocity to current position after a second", () => {
         let move_for_one_second = move(1)
         const p1 = move_for_one_second(sprite(point(0, 0), point(1, 1))).position
         const p2 = move_for_one_second(sprite(point(3, 2), point(1, 3))).position
@@ -60,15 +60,15 @@ describe("move", () => {
         chai.expect(p2.x).to.equal(4)
         chai.expect(p2.y).to.equal(5)
     })
-    it("adds speed proportional to the time passed", () => {
+    it("adds velocity proportional to the time passed", () => {
         let object = sprite(point(3, 2), point(1, 3))
         const position = move(2)(object).position
         chai.expect(position.x).to.equal(5)
         chai.expect(position.y).to.equal(8)
     })
-    it("preserves speed", () => {
+    it("preserves velocity", () => {
         let object = sprite(point(3, 2), point(1, 3))
-        const speed = move(2)(object).speed
+        const speed = move(2)(object).velocity
         chai.expect(speed.x).to.equal(1)
         chai.expect(speed.y).to.equal(3)
     })
@@ -95,8 +95,8 @@ describe("sprite", () => {
     it('has position', () => {
         chai.expect(s.position.x).to.equal(1)
     });
-    it('has speed', () => {
-        chai.expect(s.speed.x).to.equal(3)
+    it('has velocity', () => {
+        chai.expect(s.velocity.x).to.equal(3)
     });
     it('has image', () => {
         chai.expect(s.image).to.equal("new Image()")
@@ -113,7 +113,7 @@ describe("sprite", () => {
     });
     it('accelerate to velocities', function () {
         const accelerated = s.accelerateTo(point(12, 43))
-        chai.expect(accelerated.speed.x).to.equal(12)
-        chai.expect(accelerated.speed.y).to.equal(43)
+        chai.expect(accelerated.velocity.x).to.equal(12)
+        chai.expect(accelerated.velocity.y).to.equal(43)
     });
 })

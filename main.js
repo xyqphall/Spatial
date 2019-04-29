@@ -21,12 +21,12 @@ window.onload = function () {
     const ship_image = loadImage('images/Ship.png')
     const projectile_default = loadImage('images/Projectile_Default.png')
 
-    const big_planet_speed = point(-20, 0)
+    const big_planet_velocity = point(-20, 0)
     const big_planets = [
-        sprite(point(-200, 400,), big_planet_speed, bg_bplanet_3),
-        sprite(point(DISPLAY_WIDTH / 2, 200,), big_planet_speed, bg_bplanet_2),
-        sprite(point(DISPLAY_WIDTH, -200,), big_planet_speed, bg_bplanet_1),
-        sprite(point(DISPLAY_WIDTH * 1.5, 200,), big_planet_speed, bg_bplanet_4),
+        sprite(point(-200, 400,), big_planet_velocity, bg_bplanet_3),
+        sprite(point(DISPLAY_WIDTH / 2, 200,), big_planet_velocity, bg_bplanet_2),
+        sprite(point(DISPLAY_WIDTH, -200,), big_planet_velocity, bg_bplanet_1),
+        sprite(point(DISPLAY_WIDTH * 1.5, 200,), big_planet_velocity, bg_bplanet_4),
     ]
     const planets = [
         sprite(point(DISPLAY_WIDTH / 2, 200,), point(-10, 0), bg_splanet_1),

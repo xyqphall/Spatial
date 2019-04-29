@@ -23,7 +23,7 @@ global.sprite = (position, speed, image) => {
     const distance = seconds => speed.multiply(seconds)
     const accelerateTo = amount => sprite(position, amount, image)
     return {
-        position, speed, image,
+        position, velocity: speed, image,
         teleport,
         move,
         distance,
