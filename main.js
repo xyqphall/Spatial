@@ -47,7 +47,7 @@ window.onload = function () {
             clouds,
         },
         player: {
-            fire: false,
+            is_firing: false,
             next_fire: 0,
             ship: sprite(
                 point(0, DISPLAY_HEIGHT / 2),
@@ -108,7 +108,7 @@ window.onload = function () {
     }
 
     function handle_player_fire(new_world) {
-        if (new_world.player.fire) {
+        if (new_world.player.is_firing) {
             if (new_world.player.next_fire <= new_world.time) {
                 return player_fire(new_world)
             }
@@ -163,7 +163,7 @@ window.onload = function () {
                 ...world,
                 player: {
                     ...world.player,
-                    fire: true,
+                    is_firing: true,
                     next_fire: Math.max(world.time, world.player.next_fire)
                 }
             }
@@ -172,7 +172,7 @@ window.onload = function () {
                 ...world,
                 player: {
                     ...world.player,
-                    fire: false,
+                    is_firing: false,
                 }
             }
         } else if (input === "MOVE-NORTH") {
