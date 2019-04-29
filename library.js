@@ -30,3 +30,13 @@ global.sprite = (position, speed, image) => {
         accelerateTo,
     }
 }
+
+global.player = (ship, shots, next_fire, is_firing) => ({
+    ship, shots, next_fire, is_firing,
+    start_firing: at_time => player(
+        ship,
+        shots,
+        Math.max(at_time, next_fire),
+        true
+    ),
+})

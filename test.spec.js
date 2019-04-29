@@ -117,3 +117,22 @@ describe("sprite", () => {
         chai.expect(accelerated.velocity.y).to.equal(43)
     });
 })
+
+describe("player", () => {
+    it('starts firing right away if cool-down have passed', () => {
+        const p = player(undefined, [], 0, false)
+
+        const firing_player = p.start_firing(100)
+
+        chai.expect(firing_player.is_firing).to.equal(true)
+        chai.expect(firing_player.next_fire).to.equal(100)
+    })
+    it('starts firing cool-down have passed if it have not passed', () => {
+        const p = player(undefined, [], 100, false)
+
+        const firing_player = p.start_firing(0)
+
+        chai.expect(firing_player.is_firing).to.equal(true)
+        chai.expect(firing_player.next_fire).to.equal(100)
+    });
+})
