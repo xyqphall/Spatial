@@ -39,4 +39,16 @@ global.player = (ship, shots, next_fire, is_firing) => ({
         Math.max(at_time, next_fire),
         true
     ),
+    fire: () => player(
+        ship,
+        [...shots, 1, 1],
+        next_fire + 500,
+        is_firing
+    ),
+    stop_firing: () => player(
+        ship,
+        shots,
+        next_fire,
+        false
+    )
 })

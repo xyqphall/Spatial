@@ -119,20 +119,38 @@ describe("sprite", () => {
 })
 
 describe("player", () => {
-    it('starts firing right away if cool-down have passed', () => {
-        const p = player(undefined, [], 0, false)
+    const ship = sprite(point(0, 0), point(0, 0), "image")
+    const _player = player(ship, [], 0, false)
 
-        const firing_player = p.start_firing(100)
+    it('starts firing right away if cool-down have passed', () => {
+        const firing_player = _player.start_firing(100)
 
         chai.expect(firing_player.is_firing).to.equal(true)
         chai.expect(firing_player.next_fire).to.equal(100)
     })
     it('starts firing cool-down have passed if it have not passed', () => {
-        const p = player(undefined, [], 100, false)
+        const p = player(ship, [], 100, false)
 
         const firing_player = p.start_firing(0)
 
         chai.expect(firing_player.is_firing).to.equal(true)
         chai.expect(firing_player.next_fire).to.equal(100)
+    });
+    it('should stop firing', () => {
+        const firing_player = _player.stop_firing()
+
+        chai.expect(firing_player.is_firing).to.equal(false)
+        chai.expect(firing_player.next_fire).to.equal(0)
+    })
+    it('fires two shots', () => {
+        const after = _player.fire()
+
+        chai.expect(after.shots.length).to.equal(2)
+    });
+    it('increase cool-down when it fires', () => {
+        // TODO: test correct projectiles
+        const after = _player.fire()
+
+        chai.expect(after.next_fire).to.equal(500)
     });
 })
