@@ -31,24 +31,19 @@ global.sprite = (position, speed, image) => {
     }
 }
 
-global.player = (ship, shots, next_fire, is_firing) => ({
+global.player = (ship, shot, shots, next_fire, is_firing) => ({
     ship, shots, next_fire, is_firing,
-    start_firing: at_time => player(
-        ship,
-        shots,
-        Math.max(at_time, next_fire),
-        true
-    ),
+    start_firing: at_time => player(ship, shot, shots, Math.max(at_time, next_fire), true),
     fire: () => player(
         ship,
-        [...shots, 1, 1],
+        shot,
+        [
+            ...shots,
+            shot.teleport(point(120, - 10)),
+            shot.teleport(point(120, 170)),
+        ],
         next_fire + 500,
         is_firing
     ),
-    stop_firing: () => player(
-        ship,
-        shots,
-        next_fire,
-        false
-    )
+    stop_firing: () => player(ship, shot, shots, next_fire, false)
 })

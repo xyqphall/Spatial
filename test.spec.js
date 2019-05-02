@@ -120,7 +120,8 @@ describe("sprite", () => {
 
 describe("player", () => {
     const ship = sprite(point(0, 0), point(0, 0), "image")
-    const _player = player(ship, [], 0, false)
+    const shot = sprite(point(0, 0), point(0, 0), "shot-image")
+    const _player = player(ship, shot, [], 0, false)
 
     it('starts firing right away if cool-down have passed', () => {
         const firing_player = _player.start_firing(100)
@@ -129,7 +130,7 @@ describe("player", () => {
         chai.expect(firing_player.next_fire).to.equal(100)
     })
     it('starts firing cool-down have passed if it have not passed', () => {
-        const p = player(ship, [], 100, false)
+        const p = player(ship, shot, [], 100, false)
 
         const firing_player = p.start_firing(0)
 
@@ -146,6 +147,26 @@ describe("player", () => {
         const after = _player.fire()
 
         chai.expect(after.shots.length).to.equal(2)
+        chai.expect(after.shots[0].image).to.equal(shot.image)
+        chai.expect(after.shots[1].image).to.equal(shot.image)
+    });
+    it('fires shots from its cannons', () => {
+        const after = _player.fire()
+
+        const shots = after.shots
+        const positions = shots
+            .map(x => x.position)
+            .sort((a, b) => a.y - b.y);
+        chai.expect(positions[0].x).to.equal(120)
+        chai.expect(positions[1].x).to.equal(120)
+        // 41 is the projectile height
+        // 200 is the ship height
+
+        // -10 means that default shot should be 10 pixels above the ship
+        // since the middle of the shot is 20.5 the "cannons" middle
+        // is 10.5 into the ship
+        chai.expect(positions[0].y).to.equal(0 + 10 - 20)
+        chai.expect(positions[1].y).to.equal(200 - 10 - 20)
     });
     it('increase cool-down when it fires', () => {
         // TODO: test correct projectiles
