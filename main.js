@@ -39,6 +39,12 @@ window.onload = function () {
         sprite(point(0, 0,), point(-40, 0,), bg_cloud_2),
         sprite(point(DISPLAY_WIDTH / 4, DISPLAY_HEIGHT / 2,), point(-40, 0,), bg_cloud_3),
     ]
+    const DEFAULT_PROJECTILE = sprite(
+        point(0, 0),
+        point(DISPLAY_WIDTH / 2, 0),
+        projectile_default
+    )
+
     const init_world = {
         time: performance.now(),
         background: {
@@ -46,16 +52,17 @@ window.onload = function () {
             planets,
             clouds,
         },
-        player: {
-            is_firing: false,
-            next_fire: 0,
-            ship: sprite(
+        player: player(
+            sprite(
                 point(0, DISPLAY_HEIGHT / 2),
                 point(0, 0),
                 ship_image
             ),
-            shots:[],
-        }
+            DEFAULT_PROJECTILE,
+            [],
+            0,
+            false
+        )
     }
 
     const ctx = display.getContext("2d")
@@ -78,11 +85,6 @@ window.onload = function () {
         return {...old_world, time}
 
     }
-    const DEFAULT_PROJECTILE = sprite(
-        point(0, 0),
-        point(DISPLAY_WIDTH / 2, 0),
-        projectile_default
-    )
     const new_top_shot = ship => DEFAULT_PROJECTILE.teleport(
         point(ship.position.x + 120, ship.position.y - 10,)
     )
