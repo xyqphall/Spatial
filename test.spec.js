@@ -1,3 +1,4 @@
+const expect = chai.expect
 describe("emitter", () => {
     const get_old_particles = (state) => state
     it("creates particles when the predicate is true", () => {
@@ -119,8 +120,8 @@ describe("sprite", () => {
 })
 
 describe("player", () => {
-    const ship = sprite(point(0, 0), point(0, 0), "image")
-    const shot = sprite(point(0, 0), point(0, 0), "shot-image")
+    const ship = sprite(point(0, 0), point(1, 1), "image")
+    const shot = sprite(point(0, 0), point(1, 1), "shot-image")
     const _player = player(ship, shot, [], 0, false)
 
     it('starts firing right away if cool-down have passed', () => {
@@ -172,6 +173,16 @@ describe("player", () => {
         // TODO: test correct projectiles
         const after = _player.fire()
 
-        chai.expect(after.next_fire).to.equal(500)
+        expect(after.next_fire).to.equal(500)
+    });
+    it('moves all sprites', () => {
+        const time_delta = 1;
+        const after = _player.fire().update(time_delta)
+        expect(after.ship.position.x).to.equal(1)
+        expect(after.ship.position.y).to.equal(1)
+        expect(after.shots[0].position.x).to.equal(121)
+        expect(after.shots[0].position.y).to.equal(-9)
+        expect(after.shots[1].position.x).to.equal(121)
+        expect(after.shots[1].position.y).to.equal(171)
     });
 })

@@ -45,5 +45,15 @@ global.player = (ship, shot, shots, next_fire, is_firing) => ({
         next_fire + 500,
         is_firing
     ),
-    stop_firing: () => player(ship, shot, shots, next_fire, false)
+    stop_firing: () => player(ship, shot, shots, next_fire, false),
+    update: time_delta => {
+        const update = move(time_delta);
+        return player(
+            update(ship),
+            shot,
+            shots.map(update),
+            next_fire,
+            is_firing
+        )
+    },
 })
