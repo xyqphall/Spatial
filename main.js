@@ -78,18 +78,17 @@ window.onload = function () {
         return {...old_world, time}
 
     }
-
-    const new_top_shot = ship => sprite(
-        point(ship.position.x + 120, ship.position.y - 10,),
+    const DEFAULT_PROJECTILE = sprite(
+        point(0, 0),
         point(DISPLAY_WIDTH / 2, 0),
         projectile_default
     )
+    const new_top_shot = ship => DEFAULT_PROJECTILE.teleport(
+        point(ship.position.x + 120, ship.position.y - 10,)
+    )
 
-    const new_bottom_shot = ship => sprite(
-        // TODO: fix y alignment, is guesstimated.
-        point(ship.position.x + 120, ship.position.y + ship.image.height - 35),
-        point(DISPLAY_WIDTH / 2, 0),
-        projectile_default
+    const new_bottom_shot = ship => DEFAULT_PROJECTILE.teleport(
+        point(ship.position.x + 120, ship.position.y + ship.image.height - 35)
     )
 
     function player_fire(new_world) {
