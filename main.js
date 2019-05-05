@@ -45,6 +45,11 @@ window.onload = function () {
         projectile_default
     )
 
+    const ship_sprite = sprite(
+        point(0, DISPLAY_HEIGHT / 2),
+        point(0, 0),
+        ship_image
+    );
     const init_world = {
         time: performance.now(),
         background: {
@@ -53,11 +58,7 @@ window.onload = function () {
             clouds,
         },
         player: player(
-            sprite(
-                point(0, DISPLAY_HEIGHT / 2),
-                point(0, 0),
-                ship_image
-            ),
+            ship_sprite,
             DEFAULT_PROJECTILE,
             [],
             0,
@@ -94,17 +95,16 @@ window.onload = function () {
     )
 
     function player_fire(new_world) {
+        const _player = new_world.player;
+        const next_fire = _player.next_fire + 500;
+        const shots = [
+            ..._player.shots,
+            new_top_shot(_player.ship),
+            new_bottom_shot(_player.ship),
+        ];
         return {
             ...new_world,
-            player: {
-                ...new_world.player,
-                next_fire: new_world.player.next_fire + 500,
-                shots: [
-                    ...new_world.player.shots,
-                    new_top_shot(new_world.player.ship),
-                    new_bottom_shot(new_world.player.ship),
-                ]
-            }
+            player: player(_player.ship, _player.shot, shots, next_fire, _player.is_firing)
         }
     }
 
@@ -121,13 +121,12 @@ window.onload = function () {
         const time_delta = (new_world.time - old_world.time) / 1000
         const move_delta = move(time_delta)
         const world_with_handled_player_fire = handle_player_fire(new_world)
+        const _player = world_with_handled_player_fire.player;
+        const ship = move_delta(_player.ship);
+        const shots = _player.shots.map(move_delta);
         return {
             ...world_with_handled_player_fire,
-            player: {
-                ...world_with_handled_player_fire.player,
-                ship: move_delta(world_with_handled_player_fire.player.ship),
-                shots: world_with_handled_player_fire.player.shots.map(move_delta)
-            }
+            player: player(ship,_player.shots, shots, _player.next_fire, _player.is_firing)
         }
     }
 
@@ -159,62 +158,46 @@ window.onload = function () {
     }
 
     function handle_input(world, input) {
+        const _player = world.player;
         if (input === "FIRE-ON") {
             return {
                 ...world,
-                player: {
-                    ...world.player,
-                    is_firing: true,
-                    next_fire: Math.max(world.time, world.player.next_fire)
-                }
+                player: _player.start_firing(world.time)
             }
         } else if (input === "FIRE-OFF") {
             return {
                 ...world,
-                player: {
-                    ...world.player,
-                    is_firing: false,
-                }
+                player: _player.stop_firing()
             }
         } else if (input === "MOVE-NORTH") {
+            let ship = _player.ship.accelerateTo(point(0, -DISPLAY_HEIGHT/2));
             return {
                 ...world,
-                player: {
-                    ...world.player,
-                    ship: world.player.ship.accelerateTo(point(0, -DISPLAY_HEIGHT/2))
-                }
+                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         } else if (input === "MOVE-SOUTH") {
+            let ship = _player.ship.accelerateTo(point(0, DISPLAY_HEIGHT/2));
             return {
                 ...world,
-                player: {
-                    ...world.player,
-                    ship: world.player.ship.accelerateTo(point(0, DISPLAY_HEIGHT/2))
-                }
+                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         } else if (input === "MOVE-EAST") {
+            let ship = _player.ship.accelerateTo(point(DISPLAY_HEIGHT/2, 0));
             return {
                 ...world,
-                player: {
-                    ...world.player,
-                    ship: world.player.ship.accelerateTo(point(DISPLAY_HEIGHT/2, 0))
-                }
+                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         } else if (input === "MOVE-WEST") {
+            let ship = _player.ship.accelerateTo(point(-DISPLAY_HEIGHT / 2, 0));
             return {
                 ...world,
-                player: {
-                    ...world.player,
-                    ship: world.player.ship.accelerateTo(point(-DISPLAY_HEIGHT/2, 0))
-                }
+                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         } else if (input === "STOP-MOVE") {
+            let ship = _player.ship.accelerateTo(point(0, 0));
             return {
                 ...world,
-                player: {
-                    ...world.player,
-                    ship: world.player.ship.accelerateTo(point(0, 0))
-                }
+                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         }
         return world
