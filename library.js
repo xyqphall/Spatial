@@ -39,8 +39,8 @@ global.player = (ship, shot, shots, next_fire, is_firing) => ({
         shot,
         [
             ...shots,
-            shot.teleport(point(120, - 10)),
-            shot.teleport(point(120, 170)),
+            shot.teleport(ship.position.add(point(120, - 10))),
+            shot.teleport(ship.position.add(point(120, 170))),
         ],
         next_fire + 500,
         is_firing

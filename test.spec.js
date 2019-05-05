@@ -169,6 +169,24 @@ describe("player", () => {
         chai.expect(positions[0].y).to.equal(0 + 10 - 20)
         chai.expect(positions[1].y).to.equal(200 - 10 - 20)
     });
+    it('fires shots from its cannons after the ship has moved', () => {
+        const after = _player.update(1).fire()
+
+        const shots = after.shots
+        const positions = shots
+            .map(x => x.position)
+            .sort((a, b) => a.y - b.y);
+        chai.expect(positions[0].x).to.equal(121)
+        chai.expect(positions[1].x).to.equal(121)
+        // 41 is the projectile height
+        // 200 is the ship height
+
+        // -10 means that default shot should be 10 pixels above the ship
+        // since the middle of the shot is 20.5 the "cannons" middle
+        // is 10.5 into the ship
+        chai.expect(positions[0].y).to.equal(1 + 0 + 10 - 20)
+        chai.expect(positions[1].y).to.equal(1 + 200 - 10 - 20)
+    });
     it('increase cool-down when it fires', () => {
         // TODO: test correct projectiles
         const after = _player.fire()
