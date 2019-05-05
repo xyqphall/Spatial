@@ -94,10 +94,10 @@ window.onload = function () {
         point(ship.position.x + 120, ship.position.y + ship.image.height - 35)
     )
 
-    function player_fire(new_world) {
+    function player_fire(world) {
         return {
-            ...new_world,
-            player: new_world.player.fire()
+            ...world,
+            player: world.player.fire()
         }
     }
 
