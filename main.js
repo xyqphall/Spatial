@@ -104,15 +104,12 @@ window.onload = function () {
     }
 
     function update_player(old_world, new_world) {
-        const time_delta = (new_world.time - old_world.time) / 1000
-        const move_delta = move(time_delta)
         const world_with_handled_player_fire = handle_player_fire(new_world)
+        const time_delta = (new_world.time - old_world.time) / 1000
         const _player = world_with_handled_player_fire.player;
-        const ship = move_delta(_player.ship);
-        const shots = _player.shots.map(move_delta);
         return {
             ...world_with_handled_player_fire,
-            player: player(ship, _player.shot, shots, _player.next_fire, _player.is_firing)
+            player: _player.update(time_delta)
         }
     }
 
