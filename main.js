@@ -86,13 +86,6 @@ window.onload = function () {
         return {...old_world, time}
 
     }
-    const new_top_shot = ship => DEFAULT_PROJECTILE.teleport(
-        point(ship.position.x + 120, ship.position.y - 10,)
-    )
-
-    const new_bottom_shot = ship => DEFAULT_PROJECTILE.teleport(
-        point(ship.position.x + 120, ship.position.y + ship.image.height - 35)
-    )
 
     function player_fire(world) {
         return {
