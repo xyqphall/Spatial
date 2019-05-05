@@ -95,16 +95,9 @@ window.onload = function () {
     )
 
     function player_fire(new_world) {
-        const _player = new_world.player;
-        const next_fire = _player.next_fire + 500;
-        const shots = [
-            ..._player.shots,
-            new_top_shot(_player.ship),
-            new_bottom_shot(_player.ship),
-        ];
         return {
             ...new_world,
-            player: player(_player.ship, _player.shot, shots, next_fire, _player.is_firing)
+            player: new_world.player.fire()
         }
     }
 
@@ -126,7 +119,7 @@ window.onload = function () {
         const shots = _player.shots.map(move_delta);
         return {
             ...world_with_handled_player_fire,
-            player: player(ship,_player.shots, shots, _player.next_fire, _player.is_firing)
+            player: player(ship, _player.shot, shots, _player.next_fire, _player.is_firing)
         }
     }
 
