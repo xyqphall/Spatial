@@ -32,7 +32,7 @@ global.sprite = (position, speed, image) => {
 }
 
 global.player = (ship, shot, shots, next_fire, is_firing) => ({
-    ship, shots, next_fire, is_firing,
+    ship, shot, shots, next_fire, is_firing,
     start_firing: at_time => player(ship, shot, shots, Math.max(at_time, next_fire), true),
     fire: () => player(
         ship,
