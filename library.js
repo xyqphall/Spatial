@@ -57,5 +57,11 @@ global.player = (ship, shot, shots, next_fire, is_firing) => ({
         )
     },
     move_north: () =>
-        player(ship.accelerateTo(point(0, -540)), shot, shots, next_fire, is_firing)
+        player(ship.accelerateTo(point(0, -540)), shot, shots, next_fire, is_firing),
+    move_south: () =>
+        player(ship.accelerateTo(point(0, 540)), shot, shots, next_fire, is_firing),
+    move_east: () =>
+        player(ship.accelerateTo(point(540, 0)), shot, shots, next_fire, is_firing),
+    move_west: () =>
+        player(ship.accelerateTo(point(-540, 0)), shot, shots, next_fire, is_firing),
 })

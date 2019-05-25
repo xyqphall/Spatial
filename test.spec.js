@@ -208,4 +208,19 @@ describe("player", () => {
         expect(after.ship.velocity.x).to.equal(0)
         expect(after.ship.velocity.y).to.equal(-540)
     });
+    it('moves south', () => {
+        const after = _player.move_south();
+        expect(after.ship.velocity.x).to.equal(0)
+        expect(after.ship.velocity.y).to.equal(540)
+    });
+    it('moves east', () => {
+        const after = _player.move_east();
+        expect(after.ship.velocity.x).to.equal(540)
+        expect(after.ship.velocity.y).to.equal(0)
+    });
+    it('moves west', () => {
+        const after = _player.move_west();
+        expect(after.ship.velocity.x).to.equal(-540)
+        expect(after.ship.velocity.y).to.equal(0)
+    });
 })
