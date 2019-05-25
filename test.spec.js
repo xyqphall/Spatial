@@ -122,7 +122,7 @@ describe("sprite", () => {
 describe("player", () => {
     const ship = sprite(point(0, 0), point(1, 1), "image")
     const shot = sprite(point(0, 0), point(1, 1), "shot-image")
-    const _player = player(ship, shot, [], 0, false)
+    const _player = player(ship, shot, [], 0, false, 0)
 
     it('starts firing right away if cool-down have passed', () => {
         const firing_player = _player.start_firing(100)
@@ -223,9 +223,17 @@ describe("player", () => {
         expect(after.ship.velocity.x).to.equal(-540)
         expect(after.ship.velocity.y).to.equal(0)
     });
-    it('can stop moving', () => {
-        const after = _player.stop_moving();
+    it('stops moving when all orders are done', () => {
+        const after = _player.move_north().stop_moving();
         expect(after.ship.velocity.x).to.equal(0)
         expect(after.ship.velocity.y).to.equal(0)
+    });
+    it('continues to move when there are orders left', () => {
+        const after = _player
+            .move_south()
+            .move_north()
+            .stop_moving();
+        expect(after.ship.velocity.x).to.equal(0)
+        expect(after.ship.velocity.y).to.equal(-540)
     });
 })

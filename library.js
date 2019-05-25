@@ -31,9 +31,10 @@ global.sprite = (position, speed, image) => {
     }
 }
 
-global.player = (ship, shot, shots, next_fire, is_firing) => ({
+global.player = (ship, shot, shots, next_fire, is_firing, move_orders) => ({
     ship, shot, shots, next_fire, is_firing,
-    start_firing: at_time => player(ship, shot, shots, Math.max(at_time, next_fire), true),
+    start_firing: at_time =>
+        player(ship, shot, shots, Math.max(at_time, next_fire), true, move_orders),
     fire: () => player(
         ship,
         shot,
@@ -43,7 +44,8 @@ global.player = (ship, shot, shots, next_fire, is_firing) => ({
             shot.teleport(ship.position.add(point(120, 170))),
         ],
         next_fire + 500,
-        is_firing
+        is_firing,
+        move_orders
     ),
     stop_firing: () => player(ship, shot, shots, next_fire, false),
     update: time_delta => {
@@ -53,17 +55,38 @@ global.player = (ship, shot, shots, next_fire, is_firing) => ({
             shot,
             shots.map(update),
             next_fire,
-            is_firing
+            is_firing,
+            move_orders
         )
     },
     move_north: () =>
-        player(ship.accelerateTo(point(0, -540)), shot, shots, next_fire, is_firing),
+        player(ship.accelerateTo(point(0, -540)), shot, shots, next_fire, is_firing, move_orders + 1),
     move_south: () =>
-        player(ship.accelerateTo(point(0, 540)), shot, shots, next_fire, is_firing),
+        player(ship.accelerateTo(point(0, 540)), shot, shots, next_fire, is_firing, move_orders + 1),
     move_east: () =>
-        player(ship.accelerateTo(point(540, 0)), shot, shots, next_fire, is_firing),
+        player(ship.accelerateTo(point(540, 0)), shot, shots, next_fire, is_firing, move_orders + 1),
     move_west: () =>
-        player(ship.accelerateTo(point(-540, 0)), shot, shots, next_fire, is_firing),
-    stop_moving: () =>
-        player(ship.accelerateTo(point(0, 0)), shot, shots, next_fire, is_firing),
+        player(ship.accelerateTo(point(-540, 0)), shot, shots, next_fire, is_firing, move_orders + 1),
+    stop_moving: () => {
+        const _move_orders = move_orders - 1;
+        if (_move_orders === 0) {
+            return player(
+                ship.accelerateTo(point(0, 0)),
+                shot,
+                shots,
+                next_fire,
+                is_firing,
+                _move_orders
+            );
+        } else {
+            return player(
+                ship,
+                shot,
+                shots,
+                next_fire,
+                is_firing,
+                _move_orders
+            );
+        }
+    },
 })

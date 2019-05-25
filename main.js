@@ -62,7 +62,8 @@ window.onload = function () {
             DEFAULT_PROJECTILE,
             [],
             0,
-            false
+            false,
+            0
         )
     }
 
@@ -170,6 +171,7 @@ window.onload = function () {
     let input_queue = []
 
     document.addEventListener("keydown", event => {
+        if (event.repeat) { return }
         if (event.code === "Space") {
             input_queue.push("FIRE-ON")
         } else if (event.code === "ArrowUp") {
@@ -178,6 +180,7 @@ window.onload = function () {
             input_queue.push("MOVE-SOUTH")
         } else if (event.code === "ArrowRight") {
             input_queue.push("MOVE-EAST")
+            console.log("MOVE-EAST")
         } else if (event.code === "ArrowLeft") {
             input_queue.push("MOVE-WEST")
         }
