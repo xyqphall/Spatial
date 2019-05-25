@@ -203,4 +203,9 @@ describe("player", () => {
         expect(after.shots[1].position.x).to.equal(121)
         expect(after.shots[1].position.y).to.equal(171)
     });
+    it('moves north', () => {
+        const after = _player.move_north();
+        expect(after.ship.velocity.x).to.equal(0)
+        expect(after.ship.velocity.y).to.equal(-540)
+    });
 })
