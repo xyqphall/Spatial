@@ -143,39 +143,17 @@ window.onload = function () {
     function handle_input(world, input) {
         const _player = world.player;
         if (input === "FIRE-ON") {
-            return {
-                ...world,
-                player: _player.start_firing(world.time)
-            }
+            return {...world, player: _player.start_firing(world.time)}
         } else if (input === "FIRE-OFF") {
-            return {
-                ...world,
-                player: _player.stop_firing()
-            }
+            return {...world, player: _player.stop_firing()}
         } else if (input === "MOVE-NORTH") {
-            let ship = _player.ship.accelerateTo(point(0, -540));
-            return {
-                ...world,
-                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
-            }
+            return {...world, player: _player.move_north()}
         } else if (input === "MOVE-SOUTH") {
-            let ship = _player.ship.accelerateTo(point(0, 540));
-            return {
-                ...world,
-                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
-            }
+            return {...world, player: _player.move_south()}
         } else if (input === "MOVE-EAST") {
-            let ship = _player.ship.accelerateTo(point(540, 0));
-            return {
-                ...world,
-                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
-            }
+            return {...world, player: _player.move_east()}
         } else if (input === "MOVE-WEST") {
-            let ship = _player.ship.accelerateTo(point(-540, 0));
-            return {
-                ...world,
-                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
-            }
+            return {...world, player: _player.move_west()}
         } else if (input === "STOP-MOVE") {
             let ship = _player.ship.accelerateTo(point(0, 0));
             return {
