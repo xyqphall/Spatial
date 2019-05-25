@@ -155,11 +155,7 @@ window.onload = function () {
         } else if (input === "MOVE-WEST") {
             return {...world, player: _player.move_west()}
         } else if (input === "STOP-MOVE") {
-            let ship = _player.ship.accelerateTo(point(0, 0));
-            return {
-                ...world,
-                player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
-            }
+            return {...world, player: _player.stop_moving()}
         }
         return world
     }

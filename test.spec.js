@@ -223,4 +223,9 @@ describe("player", () => {
         expect(after.ship.velocity.x).to.equal(-540)
         expect(after.ship.velocity.y).to.equal(0)
     });
+    it('can stop moving', () => {
+        const after = _player.stop_moving();
+        expect(after.ship.velocity.x).to.equal(0)
+        expect(after.ship.velocity.y).to.equal(0)
+    });
 })
