@@ -153,25 +153,25 @@ window.onload = function () {
                 player: _player.stop_firing()
             }
         } else if (input === "MOVE-NORTH") {
-            let ship = _player.ship.accelerateTo(point(0, -DISPLAY_HEIGHT/2));
+            let ship = _player.ship.accelerateTo(point(0, -540));
             return {
                 ...world,
                 player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         } else if (input === "MOVE-SOUTH") {
-            let ship = _player.ship.accelerateTo(point(0, DISPLAY_HEIGHT/2));
+            let ship = _player.ship.accelerateTo(point(0, 540));
             return {
                 ...world,
                 player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         } else if (input === "MOVE-EAST") {
-            let ship = _player.ship.accelerateTo(point(DISPLAY_HEIGHT/2, 0));
+            let ship = _player.ship.accelerateTo(point(540, 0));
             return {
                 ...world,
                 player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
             }
         } else if (input === "MOVE-WEST") {
-            let ship = _player.ship.accelerateTo(point(-DISPLAY_HEIGHT / 2, 0));
+            let ship = _player.ship.accelerateTo(point(-540, 0));
             return {
                 ...world,
                 player: player(ship, _player.shot, _player.shots, _player.next_fire, _player.is_firing)
