@@ -20,6 +20,7 @@ window.onload = function () {
     const bg_cloud_3 = loadImage('images/BG_Cloud_3.png')
     const ship_image = loadImage('images/Ship.png')
     const projectile_default = loadImage('images/Projectile_Default.png')
+    const enemy_1 = loadImage('images/Enemy_1.png')
 
     const big_planet_velocity = point(-20, 0)
     const big_planets = [
@@ -44,6 +45,11 @@ window.onload = function () {
         point(DISPLAY_WIDTH / 2, 0),
         projectile_default
     )
+    const ENEMY_1 = sprite(
+        point(0, 0),
+        point(-DISPLAY_WIDTH / 2, 0),
+        enemy_1
+    )
 
     const ship_sprite = sprite(
         point(0, DISPLAY_HEIGHT / 2),
@@ -64,7 +70,10 @@ window.onload = function () {
             0,
             false,
             0
-        )
+        ),
+        enemies: [
+            ENEMY_1.teleport(point(DISPLAY_WIDTH, DISPLAY_HEIGHT/2))
+        ]
     }
 
     const ctx = display.getContext("2d")
@@ -114,11 +123,20 @@ window.onload = function () {
         }
     }
 
+    function update_enemies(old_world, new_world) {
+        const time_delta = (new_world.time - old_world.time) / 1000
+        const move_delta = move(time_delta)
+        return {
+            ...new_world,
+            enemies: new_world.enemies.map(move_delta)
+        }
+    }
+
     function update(old_world, time) {
         const world_1 = update_time(old_world, time)
         const world_2 = update_background(old_world, world_1)
-        return update_player(old_world, world_2)
-
+        const world_3 = update_player(old_world, world_2);
+        return update_enemies(old_world, world_3)
     }
     function draw_moving_background(world) {
         world.background.planets.forEach(draw_sprite)
@@ -135,10 +153,15 @@ window.onload = function () {
         draw_sprite(world.player.ship)
     }
 
+    function draw_enemies(world) {
+        world.enemies.forEach(draw_sprite)
+    }
+
     function draw(world) {
         ctx.clearRect(0, 0, DISPLAY_WIDTH, display.clientHeight)
         draw_moving_background(world)
         draw_player(world)
+        draw_enemies(world)
     }
 
     function handle_input(world, input) {
