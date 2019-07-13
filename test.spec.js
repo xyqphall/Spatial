@@ -237,3 +237,101 @@ describe("player", () => {
         expect(after.ship.velocity.y).to.equal(-540)
     });
 })
+
+describe("Collision detection", () => {
+    const origo_hit_box = hit_box(point(0, 0), point(10, 10));
+    it('finds collidees for colliders', function () {
+        const collider = "collider";
+        const colliders = [{
+            hit_box: origo_hit_box,
+            owner: collider
+        }]
+        const collidee_1 = "collidee 1";
+        const collidee_2 = "collidee 2";
+        const collidees = [
+            {
+                hit_box: origo_hit_box,
+                owner: collidee_1
+            },
+            {
+                hit_box: origo_hit_box,
+                owner: collidee_2
+            }
+        ]
+
+        const collisions = find_collisions(
+            colliders,
+            collidees
+        )
+        expect(collisions.has(collider)).to.equal(true)
+        expect(collisions.get(collider)).to.contain(collidee_1)
+        expect(collisions.get(collider)).to.contain(collidee_2)
+    });
+
+    it('ignores collidees for colliders', function () {
+        const collider = "collider";
+        const colliders = [{
+            hit_box: origo_hit_box,
+            owner: collider
+        }]
+        const collidee = "collidee";
+        const collidees = [
+            {
+                hit_box: origo_hit_box.move(point(10, 10)),
+                owner: collidee
+            },
+            {
+                hit_box: origo_hit_box.move(point(0, 10)),
+                owner: collidee
+            },
+            {
+                hit_box: origo_hit_box.move(point(-10, 0)),
+                owner: collidee
+            },
+            {
+                hit_box: origo_hit_box.move(point(0, -10)),
+                owner: collidee
+            }
+        ]
+
+        const collisions = find_collisions(
+            colliders,
+            collidees
+        )
+
+        expect(collisions.has(collider)).to.equal(false)
+    });
+})
+
+function find_collisions(colliders, collidees) {
+    const map = new Map();
+    const collider = colliders[0];
+    collidees.forEach(collidee => {
+        if (
+            collidee.hit_box.upper_left.x <= collider.hit_box.upper_left.x &&
+            collider.hit_box.upper_left.x < collidee.hit_box.lower_right.x &&
+            collidee.hit_box.upper_left.y <= collider.hit_box.upper_left.y &&
+            collider.hit_box.upper_left.y < collidee.hit_box.lower_right.y
+        ) {
+            const owner = collidee.owner;
+            if (!map.has(collider.owner)) {
+                map.set(collider.owner, [owner])
+            } else {
+                map.get(collider.owner).push(owner)
+            }
+        }
+    })
+    return map;
+}
+
+function hit_box(upper_left, lower_right) {
+    return {
+        upper_left: upper_left,
+        lower_right: lower_right,
+        move: distance =>
+            hit_box(
+                upper_left.add(distance),
+                lower_right.add(distance)
+            )
+    };
+}
