@@ -153,10 +153,15 @@ update : Msg -> World -> ( World, Cmd Msg )
 update msg world =
     case msg of
         TimePassed delta ->
-            ( world, Cmd.none )
+            updateOnTimePassed delta world
 
         Key keyAction ->
             updateOnKeyAction keyAction world
+
+
+updateOnTimePassed : Float -> World -> ( World, Cmd msg )
+updateOnTimePassed delta world =
+    ( world, Cmd.none )
 
 
 updateOnKeyAction keyAction world =
