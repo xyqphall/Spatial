@@ -45,6 +45,7 @@ type alias Sprite =
     { imageUrl : String
     , imageDimensions : Vector2d Unitless ()
     , rectangle : Rectangle2d Unitless ()
+    , velocity : Vector2d Unitless ()
     }
 
 
@@ -78,6 +79,7 @@ spawn imageUrl spriteWidth spriteHeight center =
     { imageUrl = imageUrl
     , imageDimensions = imageDimensions
     , rectangle = rectangle
+    , velocity = Vector2d.unitless 0 0
     }
 
 
@@ -161,7 +163,18 @@ update msg world =
 
 updateOnTimePassed : Float -> World -> ( World, Cmd msg )
 updateOnTimePassed delta world =
-    ( world, Cmd.none )
+    let
+        { player } =
+            world
+
+        nextPlayer =
+            let
+                nextRectangle =
+                    Rectangle2d.translateBy (Vector2d.scaleBy delta player.velocity) player.rectangle
+            in
+            { player | rectangle = nextRectangle }
+    in
+    ( { world | player = nextPlayer }, Cmd.none )
 
 
 updateOnKeyAction keyAction world =
