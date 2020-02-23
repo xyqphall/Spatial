@@ -168,13 +168,19 @@ updateOnTimePassed delta world =
             world
 
         nextPlayer =
-            let
-                nextRectangle =
-                    Rectangle2d.translateBy (Vector2d.scaleBy delta player.velocity) player.rectangle
-            in
-            { player | rectangle = nextRectangle }
+            updateSprite delta player
     in
     ( { world | player = nextPlayer }, Cmd.none )
+
+
+updateSprite delta sprite =
+    let
+        nextRectangle =
+            Rectangle2d.translateBy
+                (Vector2d.scaleBy delta sprite.velocity)
+                sprite.rectangle
+    in
+    { sprite | rectangle = nextRectangle }
 
 
 updateOnKeyAction keyAction world =
