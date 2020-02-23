@@ -2,8 +2,10 @@ module Main exposing (main)
 
 import Angle
 import Browser exposing (element)
+import Browser.Events exposing (onKeyDown, onKeyUp)
 import Html exposing (Html)
 import Html.Attributes exposing (style)
+import Json.Decode as Decode
 import Point2d exposing (Point2d)
 import Quantity exposing (Unitless, float)
 import Rectangle2d exposing (Rectangle2d)
@@ -46,10 +48,15 @@ type alias Sprite =
     }
 
 
+type alias KeyState =
+    List Key
+
+
 type alias World =
     { player : Sprite
+    , keyState : KeyState
     , enemies : List Sprite
-    , enemieProjectiles : List Sprite
+    , enemiesProjectiles : List Sprite
     , playerProjectiles : List Sprite
     }
 
@@ -91,8 +98,9 @@ init () =
         world : World
         world =
             { player = player
+            , keyState = []
             , enemies = []
-            , enemieProjectiles = []
+            , enemiesProjectiles = []
             , playerProjectiles = []
             }
     in
@@ -141,11 +149,63 @@ renderSprite { imageUrl, rectangle, imageDimensions } =
         []
 
 
-update : msg -> World -> ( World, Cmd msg )
-update _ world =
-    ( world, Cmd.none )
+update : KeyAction -> World -> ( World, Cmd KeyAction )
+update msg world =
+    let
+        { keyState } =
+            world
+
+        nextKeyState =
+            case msg of
+                Press k ->
+                    k :: List.filter (\k2 -> k2 /= k) keyState
+
+                Release k ->
+                    List.filter (\k2 -> k2 /= k) keyState
+    in
+    ( { world | keyState = nextKeyState }, Cmd.none )
 
 
-subscriptions : World -> Sub msg
+subscriptions : World -> Sub KeyAction
 subscriptions _ =
-    Sub.none
+    Sub.batch
+        [ onKeyDown (Decode.map Press keyDecoder)
+        , onKeyUp (Decode.map Release keyDecoder)
+        ]
+
+
+type Key
+    = Left
+    | Right
+    | Up
+    | Down
+    | Other
+
+
+type KeyAction
+    = Press Key
+    | Release Key
+
+
+keyDecoder : Decode.Decoder Key
+keyDecoder =
+    Decode.map toDirection (Decode.field "key" Decode.string)
+
+
+toDirection : String -> Key
+toDirection string =
+    case string of
+        "ArrowLeft" ->
+            Left
+
+        "ArrowRight" ->
+            Right
+
+        "ArrowUp" ->
+            Up
+
+        "ArrowDown" ->
+            Down
+
+        _ ->
+            Other
