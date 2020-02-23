@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Angle
 import Browser exposing (element)
-import Browser.Events exposing (onKeyDown, onKeyUp)
+import Browser.Events exposing (onAnimationFrameDelta, onKeyDown, onKeyUp)
 import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Json.Decode as Decode
@@ -149,28 +149,40 @@ renderSprite { imageUrl, rectangle, imageDimensions } =
         []
 
 
-update : KeyAction -> World -> ( World, Cmd KeyAction )
+update : Msg -> World -> ( World, Cmd Msg )
 update msg world =
-    let
-        { keyState } =
-            world
+    case msg of
+        TimePassed delta ->
+            ( world, Cmd.none )
 
+        Key keyAction ->
+            updateOnKeyAction keyAction world
+
+
+updateOnKeyAction keyAction world =
+    let
         nextKeyState =
-            case msg of
+            case keyAction of
                 Press k ->
-                    k :: List.filter (\k2 -> k2 /= k) keyState
+                    k :: List.filter (\k2 -> k2 /= k) world.keyState
 
                 Release k ->
-                    List.filter (\k2 -> k2 /= k) keyState
+                    List.filter (\k2 -> k2 /= k) world.keyState
     in
     ( { world | keyState = nextKeyState }, Cmd.none )
 
 
-subscriptions : World -> Sub KeyAction
+type Msg
+    = TimePassed Float
+    | Key KeyAction
+
+
+subscriptions : World -> Sub Msg
 subscriptions _ =
     Sub.batch
-        [ onKeyDown (Decode.map Press keyDecoder)
-        , onKeyUp (Decode.map Release keyDecoder)
+        [ Sub.map Key <| onKeyDown (Decode.map Press keyDecoder)
+        , Sub.map Key <| onKeyUp (Decode.map Release keyDecoder)
+        , onAnimationFrameDelta TimePassed
         ]
 
 
