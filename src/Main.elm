@@ -151,14 +151,17 @@ renderSprite { imageUrl, rectangle, imageDimensions } =
         []
 
 
-update : Msg -> World -> ( World, Cmd Msg )
+update : MaybeMessage -> World -> ( World, Cmd MaybeMessage )
 update msg world =
     case msg of
-        TimePassed delta ->
+        Just (TimePassed delta) ->
             updateOnTimePassed delta world
 
-        Key keyAction ->
+        Just (Key keyAction) ->
             updateOnKeyAction keyAction world
+
+        Nothing ->
+            ( world, Cmd.none )
 
 
 updateOnTimePassed : Float -> World -> ( World, Cmd msg )
@@ -185,6 +188,9 @@ updateSprite delta sprite =
 
 updateOnKeyAction keyAction world =
     let
+        { player } =
+            world
+
         nextKeyState =
             case keyAction of
                 Press k ->
@@ -192,8 +198,29 @@ updateOnKeyAction keyAction world =
 
                 Release k ->
                     List.filter (\k2 -> k2 /= k) world.keyState
+
+        nextPlayer =
+            case List.head nextKeyState of
+                Just Up ->
+                    { player | velocity = Vector2d.unitless 0 -1 }
+
+                Just Down ->
+                    { player | velocity = Vector2d.unitless 0 1 }
+
+                Just Right ->
+                    { player | velocity = Vector2d.unitless 1 0 }
+
+                Just Left ->
+                    { player | velocity = Vector2d.unitless -1 0 }
+
+                Nothing ->
+                    { player | velocity = Vector2d.unitless 0 0 }
     in
-    ( { world | keyState = nextKeyState }, Cmd.none )
+    ( { world | keyState = nextKeyState, player = nextPlayer }, Cmd.none )
+
+
+type alias MaybeMessage =
+    Maybe Msg
 
 
 type Msg
@@ -201,12 +228,12 @@ type Msg
     | Key KeyAction
 
 
-subscriptions : World -> Sub Msg
+subscriptions : World -> Sub MaybeMessage
 subscriptions _ =
     Sub.batch
-        [ Sub.map Key <| onKeyDown (Decode.map Press keyDecoder)
-        , Sub.map Key <| onKeyUp (Decode.map Release keyDecoder)
-        , onAnimationFrameDelta TimePassed
+        [ Sub.map (Maybe.map (Key << Press)) <| onKeyDown keyDecoder
+        , Sub.map (Maybe.map (Key << Release)) <| onKeyUp keyDecoder
+        , onAnimationFrameDelta (Just << TimePassed)
         ]
 
 
@@ -215,7 +242,6 @@ type Key
     | Right
     | Up
     | Down
-    | Other
 
 
 type KeyAction
@@ -223,25 +249,25 @@ type KeyAction
     | Release Key
 
 
-keyDecoder : Decode.Decoder Key
+keyDecoder : Decode.Decoder (Maybe Key)
 keyDecoder =
     Decode.map toDirection (Decode.field "key" Decode.string)
 
 
-toDirection : String -> Key
+toDirection : String -> Maybe Key
 toDirection string =
     case string of
         "ArrowLeft" ->
-            Left
+            Just Left
 
         "ArrowRight" ->
-            Right
+            Just Right
 
         "ArrowUp" ->
-            Up
+            Just Up
 
         "ArrowDown" ->
-            Down
+            Just Down
 
         _ ->
-            Other
+            Nothing
